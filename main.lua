@@ -41,6 +41,8 @@ player={x=0,y=0,brk=0,jump=false}
 
 player.inventory={}
 player.inventory.slots=5
+player.hp = 20
+player.maxhp = 20
 
 world={chunk={},tile={}}
 world.tile.textures={}
@@ -103,7 +105,11 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
     if(key=="m")then if(world.w<64)then world.w=world.w+1;world.h=world.h+1 end; end
     if(key=="n")then world.w=world.w-1;world.h=world.h-1; end
   end
+
+
 end
+
+
 
 function love.load()
   love.window.setVSync(-1) --11,3 only
@@ -193,6 +199,7 @@ function love.update(dt)
 end
 
 function love.draw()
+
   love.graphics.setBackgroundColor(0,0,0)
   if not(inGame) then
     menu.draw()
@@ -223,6 +230,15 @@ function love.draw()
 
     --player (white rect)
     love.graphics.rectangle('fill',(rpx or 0)-world.tile.h,(rpy or 0)-world.tile.w,world.tile.w-4,(world.tile.h*2)-4)
+
+    --hp bar
+    love.graphics.setColor(255,0,0)
+
+    love.graphics.rectangle('fill',(rpx or 0)-world.tile.h-15,(rpy or 0)-world.tile.w-35,60,10)
+    love.graphics.setColor(0,255,0)
+    love.graphics.rectangle('fill',(rpx or 0)-world.tile.h-15,(rpy or 0)-world.tile.w-35,math.min(math.max(60-(player.maxhp-player.hp),0),60),10)
+    love.graphics.setColor(255,255,255)
+
 
     camera:detach()
     camera:draw()
