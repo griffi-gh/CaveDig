@@ -33,7 +33,7 @@ function phy.loop()
   rpy=rpy2
   phy.reloadBlocks()
   phy.jump()
-  if phy.player.isOnGround() then
+  if phy.player.isOnGround(5) then
     phy.player.Drop=0
     if fallen > 30 then
       player.hp = player.hp - LoseHp
@@ -64,12 +64,10 @@ end
 
 
 function phy.addBlock(x,y,w,h)
-
     local block = {x=x,y=y,w=w,h=h}
     phy.blocks[#phy.blocks+1] = block
     phy.world:add(block, x,y,w,h)
     phy.uu=true
-
 end
 
 function phy.clrBlock()
@@ -106,9 +104,9 @@ end
 
 
 
-function phy.player.isOnGround()
-
-  local actualX, actualY, cols, len = phy.world:check(phy.player, nf(rpx), nf(rpy)+world.tile.h/2+4)
+function phy.player.isOnGround(s)
+  s=s or 4
+  local actualX, actualY, cols, len = phy.world:check(phy.player, nf(rpx), nf(rpy)+world.tile.h/2+s)
   if len>0 then return true else return false end
 end
 
