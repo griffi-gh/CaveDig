@@ -1,4 +1,4 @@
-baton = require 'lib.Baton.baton' --BATON INPUT
+﻿baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump'
 require'f'
@@ -6,7 +6,9 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=18
+version=21
+ru=false
+cheat=false
 
 local input = baton.new {
   controls = {
@@ -22,14 +24,15 @@ local input = baton.new {
   joystick = love.joystick.getJoysticks()[1],
 }
 
---rus
---rtxt={"Не копай под себя","Также попробуйте Minecraft и Terraria","Постоянные вылеты!",
---"OwO","Без ГМО","Что это за игра?","Скидка 100%","Красивые блоки","Не содержит сахар!",
---"РACCKA3 O ПTNЦAX БE3 ГОЛ0СА","Привет, <ваше имя>.","Шоу русалок:15423","Баги везде!"}
-
+if(rus)then
+rtxt={"Не копай под себя","Также попробуйте Minecraft и Terraria","Постоянные вылеты!",
+"OwO","Без ГМО","Что это за игра?","Скидка 100%","Красивые блоки","Не содержит сахар!",
+"РACCKA3 O ПTNЦAX БE3 ГОЛ0СА","Привет, <ваше имя>.","Шоу русалок:15423","Баги везде!"}
+else
 rtxt={"Do not dig for yourself", "Also try Minecraft and Terraria", "Constant crashes!",
 "OwO", "Non-GMO", "What kind of game is this?", "100% discount", "Beautiful blocks", "Sugar free!",
 "tpt", "Hello, <your name>.", "Mermaid show: 15423", "Bugs everywhere!"}
+end
 
 texture_dir="textures/world/"
 brk_texture_dir="textures/destroy/"
@@ -60,6 +63,22 @@ require'physics'
 require'chunk-loader'
 require'menu'
 
+function initGame(wn)
+  world.name=wn or world.name
+  inGame=true
+  if not(gameInit)then
+    chl.f.init()
+    phy.init()
+    gameInit=true
+  end
+end
+
+function closeGame()
+  if(gameInit)then chl.f.saveChunk() end
+  love.window.close()
+  love.event.quit()
+end
+
 function XYtoBlock(mx,my)
   local x=math.ceil(mx/world.w*2)
   local y=math.ceil(my/world.h*2)
@@ -72,7 +91,6 @@ end
 
 function love.keypressed(key,scancode,isrepeat) --DEBUG
   if(key=="k")then chl.f.saveChunk() end
-  if(key=="e")then inGame=false end
 
   print(key.." "..tostring(isrepeat))
   if(key=="e")then inGame=false end

@@ -33,15 +33,6 @@ function phy.loop()
   if phy.player.isOnGround() then phy.player.Drop=0 end
 end
 
-local function has_value (tab, val)
-    for index, value in ipairs(tab) do
-        if value == val then
-            return true
-        end
-    end
-
-    return false
-end
 
 function phy.reloadBlocks()
   phy.clrBlock()
@@ -49,9 +40,9 @@ function phy.reloadBlocks()
     if world.chunk.data[i]>0 then
       local tmpx2,tmpy2=t2d1d(i,world.w)
       if(tmpx2*world.tile.w>0)then
-	    if has_value(phy.nocollosion, world.chunk.data[i]) == false then
+	      if table.has_value(phy.nocollosion, world.chunk.data[i]) == false then
           phy.addBlock(tmpx2*world.tile.w,tmpy2*world.tile.h,world.tile.w,world.tile.h)
-		end
+		    end
       end
     end
   end
@@ -60,12 +51,12 @@ end
 
 
 function phy.addBlock(x,y,w,h)
-  
+
     local block = {x=x,y=y,w=w,h=h}
     phy.blocks[#phy.blocks+1] = block
     phy.world:add(block, x,y,w,h)
     phy.uu=true
-  
+
 end
 
 function phy.clrBlock()
@@ -103,7 +94,7 @@ end
 
 
 function phy.player.isOnGround()
-  
+
   local actualX, actualY, cols, len = phy.world:check(phy.player, nf(rpx), nf(rpy)+world.tile.h/2+4)
   if len>0 then return true else return false end
 end

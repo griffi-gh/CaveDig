@@ -1,8 +1,11 @@
 menu={buttons={},screen=0}
-menu.buttons.code={"initGame()","love.event.quit()"}
--- rus menu.buttons.text={"Играть","Выход"}--"Вийди 3вiдси розбiйник"
+menu.buttons.code={"initGame()","closeGame()"}
 
-menu.buttons.text={"Play","Exit"}
+if(ru)then
+  menu.buttons.text={"Играть","Выход"}--"Вийди 3вiдси розбiйник"]
+else
+  menu.buttons.text={"Play","Exit"}
+end
 
 function menu.buttxy(i,f,t)
   f=f or fonts.menu
@@ -17,16 +20,6 @@ function menu.buttwh(i,f)
   local w=f:getWidth(menu.buttons.text[i])
   local h=f:getHeight()
   return w,h
-end
-
-function initGame(wn)
-  world.name=wn or world.name
-  inGame=true
-  if not(gameInit)then
-    chl.f.init()
-    phy.init()
-    gameInit=true
-  end
 end
 
 function menu.loop()

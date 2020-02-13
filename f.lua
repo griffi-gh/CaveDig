@@ -6,6 +6,18 @@ function nf(i)
   return i or 0
 end
 
+
+function table.has_value(tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
+
 function table.count(t)
   local count=0
   for k,v in pairs(t) do
