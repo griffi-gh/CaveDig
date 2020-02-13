@@ -33,8 +33,17 @@ function phy.loop()
   rpy=rpy2
   phy.reloadBlocks()
   phy.jump()
-  if phy.player.isOnGround() then phy.player.Drop=0   if fallen > 30 then player.hp = player.hp - LoseHp LoseHp = 0  end fallen = 0 else LoseHp = LoseHp + 0.25 fallen = fallen+1 end
---end
+  if phy.player.isOnGround() then
+    phy.player.Drop=0
+    if fallen > 30 then
+      player.hp = player.hp - LoseHp
+      LoseHp = 0
+      fallen = 0
+    end
+  else
+    LoseHp = LoseHp + 0.25
+    fallen = fallen+1
+  end
 end
 
 
