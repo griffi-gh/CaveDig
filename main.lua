@@ -129,7 +129,7 @@ function love.load()
 
   camera = Camera()
   camera:setBounds(0,0,(world.w-1)*world.tile.w, (world.h-1)*world.tile.h)
-  camera:setFollowStyle('PLATFORMER')
+  camera:setFollowStyle('TOPDOWN_TIGHT')
 
   print("res w:"..w.." h:"..h)
 
