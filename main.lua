@@ -186,12 +186,12 @@ function love.update(dt)
     if(px<0)then
       chl.f.moveToChunk(world.chunk.id.x-1,world.chunk.id.y)
       movp(world.w-2,-16)
-      phy.player.dropOnGround()
+      phy.player.dropOnGround();phy.player.dropOnGround()
     end
     if(px>world.w*world.tile.w)then
       chl.f.moveToChunk(world.chunk.id.x+1,world.chunk.id.y)
       movp(2,-16)
-      phy.player.dropOnGround()
+      phy.player.dropOnGround();phy.player.dropOnGround()
     end
 
     phy.loop()
