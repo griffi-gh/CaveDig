@@ -7,7 +7,7 @@ worldmenu.buttons.code={"initGame("..love.math.random(10000,99999)..")"}
 
 if(ru)then
   menu.buttons.text={"Играть","Выход"}--"Вийди 3вiдси розбiйник"]
-  worldmenu.buttons.text={"","Создать"}
+  worldmenu.buttons.text={"Создать"}
 else
   menu.buttons.text={"Play","Exit"}
   worldmenu.buttons.text={"Create"}
@@ -75,7 +75,11 @@ function love.mousepressed(x,y,button)
 delayedtime = delayedtime+1
 if button==1 and delayedtime > 1 then
 	delayedtime = 0
-	worldmenu.buttons.code[1]()
+  local tmpx1,tmpx2=menu.buttxy(1,nil,worldmenu.buttons.text[1])
+  local tmpx3,tmpx4=worldmenu.buttwh(1)
+  if(isInRect(x,y,tmpx1,tmpx2,tmpx1+tmpx3,tmpx2+tmpx4))then
+    worldmenu.buttons.code[1]()
+  end
 end
 end
 
