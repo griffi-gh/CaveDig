@@ -6,7 +6,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=23
+version=24
 ru=false
 cheat=false
 

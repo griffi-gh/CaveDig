@@ -46,20 +46,18 @@ function chgen.f.gen(mode)--mode 0-cave 1-overworld  3-sky
     for i=1,table.count(curv) do
 	     if GeneratedBiome == 1 then
          local tmpy_wg=curv[i]+terrh
-      	 if(love.math.random(1,30) < 15) then
-           t[t1d2d(i,tmpy_wg,world.w)]=chgen.grass
-	       else
-	         t[t1d2d(i,tmpy_wg,world.w)]=chgen.grass
+         t[t1d2d(i,tmpy_wg,world.w)]=chgen.grass
+      	 if not(love.math.random(1,30) < 15) then
 	         if GenerateTreeInRad < 1 then
 	         GenerateTreeInRad = GenerateTreeInRad + 5
-	          t[t1d2d(i,tmpy_wg-1,world.w)]=chgen.wood
-	          t[t1d2d(i,tmpy_wg-2,world.w)]=chgen.wood
-	          t[t1d2d(i,tmpy_wg-3,world.w)]=chgen.wood
-	          t[t1d2d(i,tmpy_wg-4,world.w)]=chgen.wood
-        	  t[t1d2d(i-1,tmpy_wg-5,world.w)]=chgen.leaves
-	          t[t1d2d(i,tmpy_wg-5,world.w)]=chgen.leaves
-	          t[t1d2d(i+1,tmpy_wg-5,world.w)]=chgen.leaves
-	          t[t1d2d(i,tmpy_wg-6,world.w)]=chgen.leaves
+           local treeH=love.math.random(3,6)
+           for k=1,treeH do
+	          t[t1d2d(i,tmpy_wg-k,world.w)]=chgen.wood
+           end
+        	  t[t1d2d(i-1,tmpy_wg-treeH-1,world.w)]=chgen.leaves
+	          t[t1d2d(i,tmpy_wg-treeH-1,world.w)]=chgen.leaves
+	          t[t1d2d(i+1,tmpy_wg-treeH-1,world.w)]=chgen.leaves
+	          t[t1d2d(i,tmpy_wg-treeH-2,world.w)]=chgen.leaves
 	       end
 	       if GenerateTreeInRad > 0 then
 	          GenerateTreeInRad = GenerateTreeInRad - 1
@@ -81,12 +79,11 @@ function chgen.f.gen(mode)--mode 0-cave 1-overworld  3-sky
 	      end
 	      local tmpy_wg=curv[i]+terrh
 		    t[t1d2d(i,tmpy_wg,world.w)]=chgen.sand
-		    t[t1d2d(i,tmpy_wg,world.w)]=chgen.sand
 		    if math.random(1,30) > 20 and GenRad[1] < 1 then
 			          GenRad[1] = 2
-			          t[t1d2d(i,tmpy_wg-1,world.w)]=chgen.cacti
-		            t[t1d2d(i,tmpy_wg-2,world.w)]=chgen.cacti
-			          t[t1d2d(i,tmpy_wg-3,world.w)]=chgen.cacti
+                for l=1,love.math.random(2,5) do
+			             t[t1d2d(i,tmpy_wg-l,world.w)]=chgen.cacti
+                end
 		    else
 			       GenRad[1] = GenRad[1] - 1
 		    end
