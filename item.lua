@@ -53,7 +53,7 @@ function inv.draw()
     end
     if inv.selected==i then
       c(1,0.25,0.25)
-      love.graphics.circle("fill",tmpx+6, 6, 5)
+      love.graphics.circle("fill",tmpx+6+14, 6, 5+14)
       c(1,1,1)
     end
   end
