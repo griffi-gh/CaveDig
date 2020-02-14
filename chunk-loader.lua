@@ -6,23 +6,27 @@ function chl.f.init()
   chl.f.saveChunk()
 end
 
-function chl.f.formatFile(worldName,CHX,XHY) 
+function chl.f.formatFolder(worldName)
+  worldName=worldName or world.name
+  return "world_"..worldName
+end
+function chl.f.formatFile(worldName,CHX,XHY)
   worldName=worldName or world.name
   local CHX=CHX or world.chunk.id.x
   local CHY=XHY or world.chunk.id.y
-  return worldName.."/".. CHX ..",".. CHY ..".cdc"
+  return chl.f.formatFolder(worldName).."/".. CHX ..",".. CHY ..".cdc"
 end
 
 function chl.f.isChunkSaved(w,x,y)
   if( love.filesystem.getInfo(chl.f.formatFile(w,x,y)) )then return true else return false end
 end
 
-function chl.f.saveChunk(wn) 
-  love.filesystem.createDirectory(world.name)
+function chl.f.saveChunk(wn)
+  love.filesystem.createDirectory(chl.f.formatFolder())
   love.filesystem.write(chl.f.formatFile(wn),table.toString(world.chunk.data))
 end
 
-function chl.f.loadChunk(wn,x,y) 
+function chl.f.loadChunk(wn,x,y)
   if(chl.f.isChunkSaved(wn,x,y))then
     world.chunk.data=table.loadString(love.filesystem.read(chl.f.formatFile(wn,x,y)),true)
   end

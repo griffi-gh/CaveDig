@@ -31,7 +31,13 @@ function phy.loop()
   local rpx2, rpy2, cols, len = phy.world:move(phy.player,px,py+player.gravity+(phy.player.Drop or 0))
   rpx=rpx2
   rpy=rpy2
-  phy.reloadBlocks()
+  if nf(phy.relc)==0 then
+    phy.reloadBlocks()
+    phy.relc=5 --PHYSICS RELOAD EVERY x FRAMES // 0-EVERY FRAME
+  else
+    phy.relc=phy.relc-1
+  end
+
   phy.jump()
   if phy.player.isOnGround(5) then
     phy.player.Drop=0

@@ -30,7 +30,8 @@ function chgen.f.curve(q,r,s,minmaxuse,min,max)
   return curve
 end
 
-function chgen.f.gen(mode)--mode 0-cave 1-overworld 2-forest 3-sky
+function chgen.f.gen(mode)--mode 0-cave 1-overworld  3-sky
+  --GeneratedBiome 1-forest 2-desert
   local t=table.fill(world.w*world.h)
   local terrh=16
   local terrlen=16
