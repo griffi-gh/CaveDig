@@ -7,11 +7,11 @@ worldmenu.buttons.code={"initGame("..love.math.random(10000,99999)..")"}
 
 if(ru)then
   menu.buttons.text={"Играть","Выход"}--"Вийди 3вiдси розбiйник"]
+  worldmenu.buttons.text={"","Создать"}
 else
   menu.buttons.text={"Play","Exit"}
+  worldmenu.buttons.text={"Create"}
 end
-
-worldmenu.buttons.text={"Create"}
 
 function worldList()
   local filesTable =love.filesystem.getDirectoryItems("")
@@ -43,14 +43,6 @@ function menu.buttwh(i,f)
   return w,h
 end
 
-function worldmenu.buttxy(i,f,t)
-  f=f or fonts.menu
-  t=t or worldmenu.buttons.text[i]
-  local x=(w/2)-(f:getWidth(t)/2)
-  local y=(h/2)+(i*f:getHeight())
-  return tonumber(x),tonumber(y)
-end
-
 function worldmenu.buttwh(i,f)
   f=f or fonts.menu
   local w=f:getWidth(worldmenu.buttons.text[i])
@@ -74,7 +66,7 @@ function menu.loop()
       end
     end
   end
-  
+
 end
 
 local delayedtime = 0
@@ -115,16 +107,16 @@ function menu.draw()
         initGame()
       end
     end
-	
+
 	for i=1,table.count(worldmenu.buttons.text)do
       love.graphics.setFont(fonts.menu)
       love.graphics.setColor(1,1,1)
       --------------------------------------------------------------
-      love.graphics.print(worldmenu.buttons.text[i],worldmenu.buttxy(i))
+      love.graphics.print(worldmenu.buttons.text[i],menu.buttxy(i,nil,worldmenu.buttons.text[i]))
       --------------------------------------------------------------
       love.graphics.setFont(fonts.default)
     end
-	
+
     love.graphics.setFont(fonts.default)
   end
 end
@@ -136,11 +128,11 @@ function menu.init()
   for i=1,table.count(worldmenu.buttons.code)do
     worldmenu.buttons.code[i]=loadstring(worldmenu.buttons.code[i])
   end
+  --[[
   if table.count(worldList())<1 then
     initGame()
     chl.f.saveChunk()
     inGame=false
-  end
+  end]]
   worlds=worldList()
-  
 end

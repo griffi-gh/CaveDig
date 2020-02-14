@@ -1,12 +1,12 @@
 ﻿baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
-bump = require 'lib.bump.bump'
+bump = require 'lib.bump.bump' --BUMP COLLISION
 require'f'
 require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=24
+version=27
 ru=false
 cheat=false
 
@@ -39,8 +39,6 @@ brk_texture_dir="textures/destroy/"
 events={}
 player={x=0,y=0,brk=0,jump=false}
 
-player.inventory={}
-player.inventory.slots=5
 player.hp = 20
 player.maxhp = 20
 
@@ -64,6 +62,7 @@ require'font'
 require'physics'
 require'chunk-loader'
 require'menu'
+require'item'
 
 function initGame(wn)
   world.name=wn or world.name
@@ -93,9 +92,7 @@ end
 
 function love.keypressed(key,scancode,isrepeat) --DEBUG
   if(key=="k")then chl.f.saveChunk() end
-
-  print(key.." "..tostring(isrepeat))
-  if(key=="e")then inGame=false end
+  --if(key=="escape")then inGame=false end
 
   if(cheat) then
     if(key=="q")then world.tile.strength={0,0,0,0,0,0} end
@@ -105,8 +102,6 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
     if(key=="m")then if(world.w<64)then world.w=world.w+1;world.h=world.h+1 end; end
     if(key=="n")then world.w=world.w-1;world.h=world.h-1; end
   end
-
-
 end
 
 
@@ -129,9 +124,7 @@ function love.load()
 
   camera = Camera()
   camera:setBounds(0,0,(world.w-1)*world.tile.w, (world.h-1)*world.tile.h)
-  camera:setFollowStyle('PLATFORMER')
-
-  print("res w:"..w.." h:"..h)
+  camera:setFollowStyle('TOPDOWN_TIGHT')
 
   menu.init()
 end
@@ -168,13 +161,17 @@ function love.update(dt)
       player.prevBlock=t1d2d(mxb,myb,world.w)
       player.brk=player.brk+1
       if(player.brk>world.tile.strength[mouseBlock])then
+        inv.addItem(world.chunk.data[t1d2d(mxb,myb,world.w)])
         world.chunk.data[t1d2d(mxb,myb,world.w)]=0
       end
     else
       player.brk=0
     end
     if(m2 and world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
-      world.chunk.data[t1d2d(mxb,myb,world.w)]=3
+      if(player.inventory[inv.selected].q>0)then
+        world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
+        inv.removeItem(nil,1,inv.selected)
+      end
     end
 
     local function movp(x,y)
@@ -239,9 +236,9 @@ function love.draw()
     love.graphics.rectangle('fill',(rpx or 0)-world.tile.h-15,(rpy or 0)-world.tile.w-35,math.min(math.max(60-(player.maxhp-player.hp),0),60),10)
     love.graphics.setColor(255,255,255)
 
-
     camera:detach()
     camera:draw()
+    inv.draw()
   end
-  love.graphics.print("FPS:"..fps.." dt:"..udt,0,0)
+  love.graphics.print("FPS:"..fps.." dt:"..udt,0,h-12)
 end
