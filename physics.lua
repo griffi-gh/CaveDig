@@ -41,14 +41,15 @@ function phy.loop()
   phy.jump()
   if phy.player.isOnGround(5) then
     phy.player.Drop=0
-    if fallen > 48 then
+    if fallen > 30 then
       player.hp = player.hp - LoseHp
       LoseHp = 0
-      fallen = 0
+      
     end
+	fallen = 0
   else
       if not(player.jump) then
-        LoseHp = LoseHp + 0.25
+        LoseHp = LoseHp + 0.15
         fallen = fallen + 1
       end
   end
