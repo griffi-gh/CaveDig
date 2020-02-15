@@ -1,4 +1,4 @@
-baton = require 'lib.Baton.baton' --BATON INPUT
+﻿baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump' --BUMP COLLISION
 require'f'
@@ -6,7 +6,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=28
+version=27
 ru=false
 cheat=false
 
@@ -44,12 +44,13 @@ player.maxhp = 20
 
 world={chunk={},tile={}}
 world.tile.textures={}
-
+world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png","leaves.png","sandstone.png","cactus.png"}
+world.tile.strength={20,20,100,10,50,10,50,10}
+world.tile.actions={"","","","","","","",""}
 world.tile.destroy_textures={}
 world.tile.brktxt_count=10
-world.tile.strength={20,20,100,10,50,10,50,10}
 
-world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png","leaves.png","sandstone.png","cactus.png"}
+
 world.w=64
 world.h=64
 world.name="World"
@@ -118,6 +119,9 @@ function love.load()
   for i=1,world.tile.brktxt_count do
     world.tile.destroy_textures[i]=love.graphics.newImage(brk_texture_dir..i..".png")
   end
+  for i=1,table.count(world.tile.actions)do
+    world.tile.actions[i]=loadstring(world.tile.actions[i])
+  end
 
   ------------------------------------------------------------------------------
   --initGame()
@@ -169,10 +173,14 @@ function love.update(dt)
     else
       player.brk=0
     end
-    if(m2 and world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
-      if(player.inventory[inv.selected].q>0)then
-        world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
-        inv.removeItem(nil,1,inv.selected)
+    if(m2)then
+      if(world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
+        if(player.inventory[inv.selected].q>0)then
+            world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
+            inv.removeItem(nil,1,inv.selected)
+        end
+      else
+        world.tile.actions[world.chunk.data[t1d2d(mxb,myb,world.w)]]()
       end
     end
 
