@@ -1,4 +1,4 @@
-﻿baton = require 'lib.Baton.baton' --BATON INPUT
+baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump' --BUMP COLLISION
 require'f'
@@ -6,7 +6,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=27
+version=28
 ru=false
 cheat=false
 
