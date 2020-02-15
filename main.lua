@@ -63,6 +63,7 @@ require'physics'
 require'chunk-loader'
 require'menu'
 require'item'
+require'modapi'
 
 function initGame(wn)
   world.name=wn or world.name
@@ -126,6 +127,7 @@ function love.load()
   camera:setBounds(0,0,(world.w-1)*world.tile.w, (world.h-1)*world.tile.h)
   camera:setFollowStyle('TOPDOWN_TIGHT')
 
+  api.inner.init()
   menu.init()
 end
 
@@ -240,5 +242,8 @@ function love.draw()
     camera:draw()
     inv.draw()
   end
+
+  api.inner.loop()
+
   love.graphics.print("FPS:"..fps.." dt:"..udt,0,h-12)
 end
