@@ -38,7 +38,7 @@ function chgen.f.gen(mode)--mode 0-cave 1-overworld  3-sky
   local terrlen_rand=2
 
   if(mode==1)then
-    local curv=chgen.f.curve(world.w,1)
+    local curv=chgen.f.curve(world.w,1,nil,true,0-(terrh/2)+1,terrh/2)
     local GenerateTreeInRad = 0
 	  local GenRad = {}
 	  GenRad[1] = 0
