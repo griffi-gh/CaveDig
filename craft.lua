@@ -1,5 +1,5 @@
 --crafting system
-crafting={f={},gui={curBlocks={0,0,0,0,0,0,0,0,0},enable=1 or false}}
+crafting={f={},gui={curBlocks={1,0,0,0,0,0,0,0,0},enable=1 or false}}
 api.crafting={}
 crafting.items={}
 local c=table.count
@@ -28,13 +28,16 @@ function api.crafting.addCraftTable(recipe,resultitem,q) --(table,table or int, 
   return item_tmp
 end
 
+
+api.crafting.addCraftTable({1,0,0,0,0,0,0,0,0},2,1)
+
 function api.crafting.getResult(recipe)--(table) <<<--------------- BROKEN!!!
     for i = 1, c(crafting.items) do
         if(crafting.items[i].recipe==recipe)then
           return crafting.items[i].output
         end
     end
-    return nil
+    return {id=0,q=0}
 end
 
 function api.crafting.getSlot(slotname) --(string)
@@ -106,9 +109,9 @@ function crafting.f.gui(forceOn)
       l(0.7,0.7,0.7,1)
       g.rectangle('fill',wx+4*35,wy+35,world.tile.w,world.tile.h)
       local result = api.crafting.getResult(crafting.gui.curBlocks)
-      if result then
-        l(1,1,1,1)
-      	g.draw(world.tile.textures[result],wx+4*35,wy+35)
+      if result.id>0 then
+          l(1,1,1,1)
+      	  g.draw(world.tile.textures[result.id],wx+4*35,wy+35)
       end
       l(1,1,1) --reset colors
       --ADD BLOCKS-----------------------------------------------------
