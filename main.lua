@@ -6,7 +6,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=30
+version=31
 ru=false
 cheat=false
 
@@ -45,9 +45,10 @@ player.maxhp = 20
 
 world={chunk={},tile={}}
 world.tile.textures={}
-world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png","leaves.png","sandstone.png","cactus.png"}
-world.tile.strength={20,20,100,10,50,10,50,10}
-world.tile.actions={"","","","","","","",""}
+world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png",
+"leaves.png","sandstone.png","cactus.png","planks.png"}
+world.tile.strength={20,20,100,10,50,10,50,10,40}
+world.tile.actions=table.fill(table.count(world.tile.texture_files),"")
 world.tile.destroy_textures={}
 world.tile.brktxt_count=10
 

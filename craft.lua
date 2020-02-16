@@ -6,33 +6,36 @@ local c=table.count
 local l=love.graphics.setColor
 local g=love.graphics
 
---[[
-item={}
-function item.toIntAuto(k,q) --TODO : !!!MOVE TO ITEM.LUA!!!!
-  if(type(k)=='table')then
-    k=k.id
-    if not q then
-      q=k.q
+function crafting.f.shapeless(t,s)
+  if s then
+    e={}
+    for i=1,table.count(t) do
+      e[i]=t[i]
     end
-    return k,q
-  end
-end]]
+    table.sort(e)
+    return e
+  else return t end
+end
 
-function api.crafting.addCraftTable(recipe,resultitem,q) --(table,table or int, int)
-  --resultitem,q=item.toIntAuto(resultitem,q)
+function api.crafting.addCraftTable(recipe,resultitem,q,shapeless)
   crafting.c=crafting.c+1
 	crafting.items[crafting.c] = {recipe={0,0,0,0,0,0,0,0,0},output={id=0,q=0}}
   crafting.items[crafting.c].recipe = recipe
+  crafting.items[crafting.c].shapeless = shapeless or false
   crafting.items[crafting.c].output.id = resultitem
   crafting.items[crafting.c].output.q = q or 1
   return crafting.c
 end
 
-api.crafting.addCraftTable({2,0,0,0,0,0,0,0,0},1,1)
+api.crafting.addCraftTable({2,0,0,0,0,0,0,0,0},1,1,true)
+api.crafting.addCraftTable({5,0,0,0,0,0,0,0,0},9,1,true)
 
 function api.crafting.getResult(recipe)--(table) <<<--------------- BROKEN!!!
+    local ts=table.toString
+    local sl=crafting.f.shapeless
     for i=1,crafting.c do
-      if(table.toString(crafting.items[i].recipe)==table.toString(recipe))then
+      local issl=crafting.items[i].shapeless
+      if(ts(sl(crafting.items[i].recipe,issl))==ts(sl(recipe,issl)))then
         return crafting.items[i].output
       end
     end
