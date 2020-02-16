@@ -6,17 +6,18 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=27
+version=30
 ru=false
 cheat=false
 
 local input = baton.new {
   controls = {
-    left = {'key:left', 'key:a', 'axis:leftx-', 'button:dpleft'},
-    right = {'key:right', 'key:d', 'axis:leftx+', 'button:dpright'},
     up = {--[['key:up', 'key:w', 'axis:lefty-', 'button:dpup']]},
     down = {--[['key:down', 'key:s', 'axis:lefty+', 'button:dpdown']]},
+    left = {'key:left', 'key:a', 'axis:leftx-', 'button:dpleft'},
+    right = {'key:right', 'key:d', 'axis:leftx+', 'button:dpright'},
     jump = {'key:space','button:a'},
+    craft = {'key:c','button:x'},
   },
   pairs = {
     move = {'left', 'right','up','down'}
@@ -137,6 +138,7 @@ end
 
 function love.update(dt)
   collectgarbage("collect")
+  inGui=crafting.gui.enable --or or or...
 
   udt=dt
   fps=love.timer.getFPS()
@@ -153,6 +155,10 @@ function love.update(dt)
       player.jump=true
     end
 
+    if(input:pressed 'craft') and phy.player.isOnGround() then
+      crafting.gui.enable=not crafting.gui.enable
+    end
+
     inputx,inputy=input:get 'move';
     px,py= inputx*(4)+(rpx or w/2),inputy*(4)+(rpy or h/2)
 
@@ -163,24 +169,26 @@ function love.update(dt)
     mxb,myb=XYtoBlock(mxw,myw)
     mouseBlock=world.chunk.data[t1d2d(mxb,myb,world.w)]
 
-    if(m1 and mouseBlock>0 and (player.prevBlock==t1d2d(mxb,myb,world.w) or player.brk==0))then
-      player.prevBlock=t1d2d(mxb,myb,world.w)
-      player.brk=player.brk+1
-      if(player.brk>world.tile.strength[mouseBlock])then
-        inv.addItem(world.chunk.data[t1d2d(mxb,myb,world.w)])
-        world.chunk.data[t1d2d(mxb,myb,world.w)]=0
-      end
-    else
-      player.brk=0
-    end
-    if(m2)then
-      if(world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
-        if(player.inventory[inv.selected].q>0)then
-            world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
-            inv.removeItem(nil,1,inv.selected)
+    if not inGui then
+      if(m1 and mouseBlock>0 and (player.prevBlock==t1d2d(mxb,myb,world.w) or player.brk==0))then
+        player.prevBlock=t1d2d(mxb,myb,world.w)
+        player.brk=player.brk+1
+        if(player.brk>world.tile.strength[mouseBlock])then
+          inv.addItem(world.chunk.data[t1d2d(mxb,myb,world.w)])
+          world.chunk.data[t1d2d(mxb,myb,world.w)]=0
         end
       else
-        world.tile.actions[world.chunk.data[t1d2d(mxb,myb,world.w)]]()
+        player.brk=0
+      end
+      if(m2)then
+        if(world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
+          if(player.inventory[inv.selected].q>0)then
+              world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
+              inv.removeItem(nil,1,inv.selected)
+          end
+        else
+          world.tile.actions[world.chunk.data[t1d2d(mxb,myb,world.w)]]()
+        end
       end
     end
 
@@ -248,7 +256,7 @@ function love.draw()
 
     camera:detach()
     camera:draw()
-    crafting.f.gui(false)
+    crafting.f.gui()
     inv.draw()
   end
 

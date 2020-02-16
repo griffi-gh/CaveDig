@@ -7,10 +7,14 @@ function nf(i)
 end
 
 
-function table.has_value(tab, val)
+function table.has_value(tab, val, mod)
     for index, value in ipairs(tab) do
         if value == val then
-            return true
+            if mod then
+              return value
+            else
+              return true
+            end
         end
     end
 
