@@ -28,7 +28,7 @@ function api.crafting.addCraftTable(recipe,resultitem,q,shapeless)
 end
 
 api.crafting.addCraftTable({2,0,0,0,0,0,0,0,0},1,1,true)
-api.crafting.addCraftTable({5,0,0,0,0,0,0,0,0},9,1,true)
+api.crafting.addCraftTable({5,0,0,0,0,0,0,0,0},9,4,true)
 
 function api.crafting.getResult(recipe)--(table) <<<--------------- BROKEN!!!
     local ts=table.toString
@@ -115,10 +115,12 @@ function crafting.f.gui()
       g.rectangle('fill',wx+tmx_rb*35,wy+35,world.tile.w,world.tile.h)
       local result = api.crafting.getResult(crafting.gui.curBlocks)
       if type(result)=='table' then
-          --error(result)
           if(result.id>0)then
             l(1,1,1,1)
         	  g.draw(world.tile.textures[result.id],wx+tmx_rb*35,wy+35)
+          end
+          if(result.q>0)then
+            g.print("x"..result.q,wx+tmx_rb*35,wy+35)
           end
       end
       l(1,1,1) --reset colors
