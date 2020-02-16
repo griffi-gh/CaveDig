@@ -65,6 +65,7 @@ require'chunk-loader'
 require'menu'
 require'item'
 require'modapi'
+require'craft'
 
 function initGame(wn)
   world.name=wn or world.name
@@ -95,9 +96,8 @@ end
 function love.keypressed(key,scancode,isrepeat) --DEBUG
   if(key=="k")then chl.f.saveChunk() end
   --if(key=="escape")then inGame=false end
-
   if(cheat) then
-    if(key=="q")then world.tile.strength={0,0,0,0,0,0} end
+    if(key=="q")then world.tile.strength=table.fill(#world.tile.strength) end
     if(key=="g")then player.weight=-player.weight end
     if(key=="v")then world.tile.h=world.tile.h+1;world.tile.w=world.tile.h end
     if(key=="b")then world.tile.h=world.tile.h-1;world.tile.w=world.tile.h end
@@ -248,6 +248,7 @@ function love.draw()
 
     camera:detach()
     camera:draw()
+    crafting.f.gui(false)
     inv.draw()
   end
 
