@@ -48,8 +48,22 @@ player.maxhp = 20
 world={chunk={},tile={}}
 world.tile.textures={}
 world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png",
-"leaves.png","sandstone.png","cactus.png","planks.png"}
-world.tile.strength={20,20,100,10,50,10,50,10,40}
+"leaves.png","sandstone.png","cactus.png","planks.png","stick.png","wooden_axe.png"}
+world.tile.strength={30,30,200,20,100,20,100,20,50}
+world.tile.ItemData={}
+
+world.tile.ItemData[1] = {type="block",strength=20}
+world.tile.ItemData[2] = {type="block",strength=20}
+world.tile.ItemData[3] = {type="block",strength=100}
+world.tile.ItemData[4] = {type="block",strength=10}
+world.tile.ItemData[5] = {type="block_wood",strength=50}
+world.tile.ItemData[6] = {type="block",strength=10}
+world.tile.ItemData[7] = {type="block",strength=50}
+world.tile.ItemData[8] = {type="block",strength=10}
+world.tile.ItemData[9] = {type="block",strength=40}
+world.tile.ItemData[10] = {type="item",strength=20}
+world.tile.ItemData[11] = {type="axe",strength=2}
+
 world.tile.actions=table.fill(table.count(world.tile.texture_files),"")
 world.tile.destroy_textures={}
 world.tile.brktxt_count=10
@@ -186,7 +200,14 @@ function love.update(dt)
     if not inGui then
       if(m1 and mouseBlock>0 and (player.prevBlock==t1d2d(mxb,myb,world.w) or player.brk==0))then
         player.prevBlock=t1d2d(mxb,myb,world.w)
-        player.brk=player.brk+1
+        local toadd = 0
+    	  if (player.inventory[inv.selected].id > 0 and world.tile.ItemData[player.inventory[inv.selected].id].type == "axe" and  world.tile.ItemData[mouseBlock].type == "block_wood" ) then
+          toadd = world.tile.ItemData[player.inventory[inv.selected].id].strength+1
+        else
+          toadd = 1
+    	  end
+        player.brk=player.brk+toadd
+
         if(player.brk>world.tile.strength[mouseBlock])then
           inv.addItem(world.chunk.data[t1d2d(mxb,myb,world.w)])
           world.chunk.data[t1d2d(mxb,myb,world.w)]=0
@@ -196,9 +217,10 @@ function love.update(dt)
       end
       if(m2)then
         if(world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
-          if(player.inventory[inv.selected].q>0)then
+          if(player.inventory[inv.selected].q>0) and (world.tile.ItemData[player.inventory[inv.selected].id].type == "block")then
               world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
               inv.removeItem(nil,1,inv.selected)
+
           end
         else
           world.tile.actions[world.chunk.data[t1d2d(mxb,myb,world.w)]]()
@@ -253,7 +275,13 @@ function love.draw()
     end
 
     if(player.brk>0)then
-      local txtid=math.min(math.floor(player.brk/world.tile.strength[mouseBlock]*world.tile.brktxt_count)+1,10)
+	  local toadd = 0
+	  if (player.inventory[inv.selected].id > 0 and world.tile.ItemData[player.inventory[inv.selected].id].type == "axe" and  world.tile.ItemData[mouseBlock].type == "block_wood" ) then
+      toadd = world.tile.ItemData[player.inventory[inv.selected].id].strength+1
+    else
+      toadd = 1
+	  end
+      local txtid=math.min(math.floor(player.brk/world.tile.strength[mouseBlock]*world.tile.brktxt_count)+toadd,10)
       love.graphics.draw(world.tile.destroy_textures[txtid],(mxb-1)*world.tile.h,(myb-1)*world.tile.h)
     end
 
