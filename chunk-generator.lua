@@ -15,6 +15,7 @@ chgen.wood=5
 chgen.leaves=6
 chgen.sandstone=7
 chgen.cacti=8
+chgen.iron_ore=12
 
 local GeneratedBiome = 1
 
@@ -68,7 +69,11 @@ function chgen.f.gen(mode)--mode 0-cave 1-overworld  3-sky
 	       end
 	    end
 	    for k=terrh+terrlen-(terrlen_rand+1),world.h do
+        if love.math.random(1,100) > 10 then
         t[t1d2d(i,k,world.w)]=chgen.stone
+        else
+          t[t1d2d(i,k,world.w)]=chgen.iron_ore
+        end
       end
       for k=tmpy_wg+1,terrh+terrlen+love.math.random(0,terrlen_rand) do
         t[t1d2d(i,k,world.w)]=chgen.dirt
