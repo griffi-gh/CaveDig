@@ -1,7 +1,7 @@
 menu={buttons={},screen=0}
 menu.buttons.code={"menu.screen=1","closeGame()"} --initGame()
 worldmenu={buttons={},screen=0}
-worldmenu.buttons.code={"initGame("..love.math.random(10000,99999)..")"}
+worldmenu.buttons.code={"XworldI=true"}
 
 --menu.buttons.code[1]='initGame()' --SKIP WORLD SELECTION
 
@@ -58,20 +58,19 @@ function menu.loop()
       local tm1,tm2=menu.buttxy(i)
       local xm1,xm2=menu.buttwh(i)
       if(isInRect(mx,my,tm1,tm2,tm1+xm1,tm2+xm2) and m1)then
-		buttondelayedtime = buttondelayedtime + 1
-		if buttondelayedtime > 1 then
-		buttondelayedtime = 0
-        menu.buttons.code[i]()
-		end
+		      buttondelayedtime = buttondelayedtime + 1
+		      if buttondelayedtime > 1 then
+		          buttondelayedtime = 0
+              menu.buttons.code[i]()
+		     end
       end
     end
   end
-
 end
 
 local delayedtime = 0
 
-function love.mousepressed(x,y,button)
+function menu.mousep(x,y,button)
 delayedtime = delayedtime+1
 if button==1 and delayedtime > 1 then
 	delayedtime = 0
@@ -83,7 +82,28 @@ if button==1 and delayedtime > 1 then
 end
 end
 
+function menu.enterText(text)
+  if(XworldI)then
+    if(text=="return")then
+      initGame(XworldName)
+      XworldI=false
+    elseif(text=="backspace")then
+      XworldName=bs(XworldName)
+    else
+      XworldName=(XworldName or "")..text
+    end
+  end
+end
+
 function menu.draw()
+  if(XworldI)then
+    if((XworldName or ""):len()>0)then
+      worldmenu.buttons.text[1]=XworldName
+    else
+      worldmenu.buttons.text[1]="..."
+    end
+  end
+
   if(menu.screen==0)then
     love.graphics.setFont(fonts.title)
     love.graphics.print(gameName,menu.buttxy(-1,fonts.title,gameName))

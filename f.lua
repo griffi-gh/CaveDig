@@ -2,10 +2,21 @@ function isInRect(mx,my,x1,y1,x2,y2)
   return (mx>x1 and mx<x2 and my>y1 and my<y2)
 end
 
+function isClicked(x1,y1,x2,y2)
+  return (mx>x1 and mx<x2+x1 and my>y1 and my<y2+y1) and m1
+end
+
 function nf(i)
   return i or 0
 end
 
+function bs(text)
+  local byteoffset = utf8.offset(text, -1)
+  if byteoffset then
+    text = string.sub(text, 1, byteoffset - 1)
+  end
+  return text
+end
 
 function table.has_value(tab, val, mod)
     for index, value in ipairs(tab) do

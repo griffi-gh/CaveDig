@@ -1,4 +1,6 @@
-﻿baton = require 'lib.Baton.baton' --BATON INPUT
+utf8=require("utf8")
+
+baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump' --BUMP COLLISION
 require'f'
@@ -6,7 +8,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=31
+version=32
 ru=false
 cheat=false
 
@@ -69,6 +71,14 @@ require'item'
 require'modapi'
 require'craft'
 
+function love.textinput(text)
+  menu.enterText(text,bs)
+end
+
+function love.mousepressed(x,y,button)
+  menu.mousep(x,y,button)
+end
+
 function initGame(wn)
   world.name=wn or world.name
   inGame=true
@@ -96,6 +106,9 @@ function love.threaderror(thread, errorstr)
 end
 
 function love.keypressed(key,scancode,isrepeat) --DEBUG
+  if key=='backspace' or key=='return' then
+    love.textinput(key)
+  end
   if(key=="k")then chl.f.saveChunk() end
   --if(key=="escape")then inGame=false end
   if(cheat) then
