@@ -10,7 +10,7 @@ require'chunk-generator'
 gameName="CaveDig"
 version=34
 ru=false
-cheat=false
+cheat=1 or false
 
 local input = baton.new {
   controls = {
@@ -48,7 +48,8 @@ player.maxhp = 20
 world={chunk={},tile={}}
 world.tile.textures={}
 world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png",
-"leaves.png","sandstone.png","cactus.png","planks.png","stick.png","wooden_axe.png"}
+"leaves.png","sandstone.png","cactus.png","planks.png","stick.png","wooden_axe.png",
+"iron_ore.png"}
 world.tile.strength={30,30,200,20,100,20,100,20,50}
 world.tile.ItemData={}
 
