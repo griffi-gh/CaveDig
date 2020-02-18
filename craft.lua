@@ -97,6 +97,7 @@ function crafting.f.gui()
     end
 
     if(crafting.gui.enable)then
+      player.brk=0
       camera:fade(0.8, {0, 0, 0, 0.85})
       --BACKGROUND----------------------------------------------------
       l(1,1,1,0.5)

@@ -50,7 +50,7 @@ world.tile.textures={}
 world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.png",
 "leaves.png","sandstone.png","cactus.png","planks.png","stick.png","wooden_axe.png",
 "iron_ore.png"}
-world.tile.strength={30,30,200,20,100,20,100,20,50}
+--world.tile.strength={30,30,200,20,100,20,100,20,50}
 world.tile.ItemData={}
 
 world.tile.ItemData[1] = {type="block",strength=20}
@@ -64,6 +64,7 @@ world.tile.ItemData[8] = {type="block",strength=10}
 world.tile.ItemData[9] = {type="block",strength=40}
 world.tile.ItemData[10] = {type="item",strength=20}
 world.tile.ItemData[11] = {type="axe",strength=2}
+world.tile.ItemData[12] = {type="block",strength=50}
 
 world.tile.actions=table.fill(table.count(world.tile.texture_files),"")
 world.tile.destroy_textures={}
@@ -126,8 +127,8 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
   end
   if(key=="k")then chl.f.saveChunk() end
   --if(key=="escape")then inGame=false end
-  if(cheat) then
-    if(key=="q")then world.tile.strength=table.fill(#world.tile.strength) end
+  if(cheat and inGame) then
+    if(key=="q")then world.tile.ItemData=table.fill(#world.tile.ItemData) end
     if(key=="g")then player.weight=-player.weight end
     if(key=="v")then world.tile.h=world.tile.h+1;world.tile.w=world.tile.h end
     if(key=="b")then world.tile.h=world.tile.h-1;world.tile.w=world.tile.h end
@@ -209,7 +210,7 @@ function love.update(dt)
     	  end
         player.brk=player.brk+toadd
 
-        if(player.brk>world.tile.strength[mouseBlock])then
+        if(player.brk>world.tile.ItemData[mouseBlock].strength)then
           inv.addItem(world.chunk.data[t1d2d(mxb,myb,world.w)])
           world.chunk.data[t1d2d(mxb,myb,world.w)]=0
         end
@@ -282,7 +283,7 @@ function love.draw()
     else
       toadd = 1
 	  end
-      local txtid=math.min(math.floor(player.brk/world.tile.strength[mouseBlock]*world.tile.brktxt_count)+toadd,10)
+      local txtid=math.min(math.floor(player.brk/world.tile.ItemData[mouseBlock].strength*world.tile.brktxt_count)+toadd,10)
       love.graphics.draw(world.tile.destroy_textures[txtid],(mxb-1)*world.tile.h,(myb-1)*world.tile.h)
     end
 

@@ -14,15 +14,13 @@ else
 end
 
 function worldList()
-  local filesTable =love.filesystem.getDirectoryItems("")
+  local filesTable =love.filesystem.getDirectoryItems(chl.f.formatFolder(""))
   local output={}
   local j=1
   for i,v in ipairs(filesTable) do
-    if love.filesystem.getInfo(v).type=='directory' then
-      if v:find("world_") ~= nil then
+    if love.filesystem.getInfo(chl.f.formatFolder("")..v).type=='directory' then
         output[j]=v
         j=j+1
-      end
     end
   end
   return output
@@ -118,12 +116,13 @@ function menu.draw()
     end
   end
   if(menu.screen==1)then
-    love.graphics.setFont(fonts.default_b)
+    local f1=fonts.roboto
+    love.graphics.setFont(f1)
     for i=1,table.count(worlds) do
-      local tmp_wn1=worlds[i]:gsub('world%_','')
-      local tmp_wh1=fonts.default_b:getHeight()
+      local tmp_wn1=worlds[i]
+      local tmp_wh1=f1:getHeight()
       local tmp_wy1=i*tmp_wh1
-      local tmp_ww1=fonts.default_b:getWidth(tmp_wn1)
+      local tmp_ww1=f1:getWidth(tmp_wn1)
       local tmp_wx1=w/2-tmp_ww1/2
       love.graphics.print(tmp_wn1,tmp_wx1,tmp_wy1)
       if(isInRect(mx,my,tmp_wx1,tmp_wy1,tmp_ww1+tmp_wx1,tmp_wh1+tmp_wy1) and m1)then

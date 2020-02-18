@@ -17,7 +17,7 @@ function api.loader.modList()
   return output
 end
 
-function api.blocks.createBlock(texture,strength,noCollision,action)
+function api.blocks.createBlock(texture,strength,type,noCollision,action)
   local id=table.count(world.tile.textures)+1
   texture=api.inner.mod_directory.."/"..texture
   action=action or ""
@@ -27,8 +27,9 @@ function api.blocks.createBlock(texture,strength,noCollision,action)
   if(noCollision)then
     phy.nocollosion[table.count(phy.nocollosion)+1]=id
   end
-  world.tile.strength[table.count(world.tile.strength)+1]=strength or 0
-  world.tile.actions[table.count(world.tile.actions)+1]=loadstring(action) 
+  world.tile.ItemData[table.count(world.tile.ItemData)+1].strength=strength or 5
+  world.tile.ItemData[table.count(world.tile.ItemData)+1].type=type or "block"
+  world.tile.actions[table.count(world.tile.actions)+1]=loadstring(action)
   return id
 end
 

@@ -8,7 +8,7 @@ end
 
 function chl.f.formatFolder(worldName)
   worldName=worldName or world.name
-  return "world_"..worldName
+  return "world/"..worldName
 end
 function chl.f.formatFile(worldName,CHX,XHY)
   worldName=worldName or world.name
