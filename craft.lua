@@ -31,6 +31,7 @@ api.crafting.addCraftTable({2,0,0,0,0,0,0,0,0},1,1,true)
 api.crafting.addCraftTable({5,0,0,0,0,0,0,0,0},9,4,true)
 api.crafting.addCraftTable({9,9,0,0,0,0,0,0,0},10,4,true)
 api.crafting.addCraftTable({9,9,0,9,10,0,0,10,0},11,1,false)
+api.crafting.addCraftTable({9,9,9,0,10,0,0,10,0},13,1,false)
 
 function api.crafting.getResult(recipe)--(table) <<<--------------- BROKEN!!!
     local ts=table.toString
