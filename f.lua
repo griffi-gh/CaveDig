@@ -11,11 +11,13 @@ function nf(i)
 end
 
 function bs(text)
-  local byteoffset = utf8.offset(text, -1)
-  if byteoffset then
-    text = string.sub(text, 1, byteoffset - 1)
+  if(text)then
+    local byteoffset = utf8.offset(text, -1)
+    if byteoffset then
+      text = string.sub(text, 1, byteoffset - 1)
+    end
+    return text
   end
-  return text
 end
 
 function table.has_value(tab, val, mod)

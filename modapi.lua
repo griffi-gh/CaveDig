@@ -2,17 +2,48 @@ api={inner={},loader={},blocks={}}
 mods={data={}}
 api.inner.mod_directory="mods"
 
+api.graphics=love.graphics
+api.player={health={}}
+
+function api.player.teleport(x,y,cx,cy)
+  local function movp(x,y)
+    phy.world:update(phy.player,px,py)
+  end
+  if x and y then
+    x2,y2 = px or x*world.tile.w , py or y*world.tile.h
+    cx2,cy2 = cx or world.chunk.id.x , cy or world.chunk.id.y
+    if x or y then movp(x2,y2) end
+    if cx or cy then chl.f.moveToChunk(cx2,cy2) end
+  end
+end
+
+function api.player.health.add(h)
+  if h then player.hp=player.hp+h end
+end
+function api.player.health.remove(h)
+  if h then player.hp=player.hp-h end
+end
+function api.player.health.set(h)
+  if h then
+    player.hp=(h/player.maxhp)*(player.maxhp*3)-(player.maxhp*2)
+  end
+end
+function api.player.health.get()
+  return (((player.hp+player.maxhp)/(player.maxhp*3))*player.maxhp)+(player.maxhp/2)-(player.maxhp/6)
+end
+function api.player.health.getMax()
+  return player.maxhp
+end
+
 function api.loader.modList()
   local filesTable =love.filesystem.getDirectoryItems(api.inner.mod_directory)
   local output={}
   local j=1
   for i,v in ipairs(filesTable) do
-    --if love.filesystem.getInfo(v).type=='file' then
-      if v:find(".lua") ~= nil then
-        output[j]=v
-        j=j+1
-      end
-    --end
+    if v:find(".lua") ~= nil then
+      output[j]=v
+      j=j+1
+    end
   end
   return output
 end
