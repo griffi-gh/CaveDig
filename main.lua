@@ -8,7 +8,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=36
+version=35
 ru=false
 cheat=false
 
@@ -53,19 +53,19 @@ world.tile.texture_files={"dirt.png","grass.png","stone.png","sand.png","wood.pn
 --world.tile.strength={30,30,200,20,100,20,100,20,50}
 world.tile.ItemData={}
 
-world.tile.ItemData[1] = {type="block",strength=35}
-world.tile.ItemData[2] = {type="block",strength=35}
-world.tile.ItemData[3] = {type="block_stone",strength=250}
-world.tile.ItemData[4] = {type="block",strength=30}
-world.tile.ItemData[5] = {type="block_wood",strength=100}
-world.tile.ItemData[6] = {type="block",strength=10}
-world.tile.ItemData[7] = {type="block",strength=150}
-world.tile.ItemData[8] = {type="block",strength=20}
-world.tile.ItemData[9] = {type="block_wood",strength=100}
-world.tile.ItemData[10] = {type="item",strength=9999}
-world.tile.ItemData[11] = {type="item_axe",strength=2}
-world.tile.ItemData[12] = {type="block",strength=50}
-world.tile.ItemData[13] = {type="item_pickaxe",strength=2}
+world.tile.ItemData[1] = {type="block",strength=35} --dirt
+world.tile.ItemData[2] = {type="block",strength=35} --grass
+world.tile.ItemData[3] = {type="block_stone",strength=250} --stone
+world.tile.ItemData[4] = {type="block",strength=30} --sand
+world.tile.ItemData[5] = {type="block_wood",strength=100}--wood
+world.tile.ItemData[6] = {type="block",strength=10}--leaves
+world.tile.ItemData[7] = {type="block",strength=150}--sandstone
+world.tile.ItemData[8] = {type="block",strength=20}--cactus
+world.tile.ItemData[9] = {type="block",strength=100} --planks
+world.tile.ItemData[10] = {type="item",strength=9999} --stick
+world.tile.ItemData[11] = {type="item_axe",strength=2}--wooden axe
+world.tile.ItemData[12] = {type="block",strength=50}--iron ore
+world.tile.ItemData[13] = {type="item_pickaxe",strength=2}--wooden pickaxe
 
 world.tile.actions=table.fill(table.count(world.tile.texture_files),"")
 world.tile.destroy_textures={}
@@ -138,10 +138,8 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
   end
 end
 
-
-
 function love.load()
-  love.window.setVSync(-1) --11,3 only
+  love.window.setVSync(0) --11,3 only
   love.window.setTitle(gameName.." v."..version.." - "..rtxt[love.math.random(1,table.count(rtxt))])
   h=love.graphics.getHeight()
   w=love.graphics.getWidth()
@@ -168,11 +166,17 @@ function love.load()
 end
 
 function love.update(dt)
-  collectgarbage("collect")
-  inGui=crafting.gui.enable --or or or...
 
   udt=dt
   fps=love.timer.getFPS()
+
+  if(fps>70)then
+    love.window.setVSync(1)
+    VsyncCompMode=true
+  end
+
+  collectgarbage("collect")
+  inGui=crafting.gui.enable --or or or...
 
   m1, m2 = love.mouse.isDown(1),love.mouse.isDown(2)
   mx, my = love.mouse.getPosition()
