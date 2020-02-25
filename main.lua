@@ -139,7 +139,7 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
 end
 
 function love.load()
-  love.window.setVSync(0) --11,3 only
+  love.window.setVSync(-1)
   love.window.setTitle(gameName.." v."..version.." - "..rtxt[love.math.random(1,table.count(rtxt))])
   h=love.graphics.getHeight()
   w=love.graphics.getWidth()
