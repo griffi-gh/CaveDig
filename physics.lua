@@ -10,20 +10,16 @@ player.inair=0
 
 player.gravity=0
 
+local LoseHp = 0
+local fallen = 0
+
 phy.world  = bump.newWorld(128)
 phy.blocks = {}
 phy.player = {}
 
 phy.nocollosion = {5,8}
 
-local LoseHp = 0
-local fallen = 0
---phy.border = {l={},r={},t={},d={}}
-
 function phy.init()
-
-  --phy.world:add(phy.border,(px or w/2),(py or h/2),world.tile.w-4,(world.tile.h*2)-4)
-
   phy.world:add(phy.player,(px or w/2),(py or h/2),world.tile.w-4,(world.tile.h*2)-4)
 end
 
@@ -31,6 +27,7 @@ function phy.loop()
   local rpx2, rpy2, cols, len = phy.world:move(phy.player,px,py+player.gravity+(phy.player.Drop or 0))
   rpx=rpx2
   rpy=rpy2
+
   if nf(phy.relc)==0 then
     phy.reloadBlocks()
     phy.relc=5 --PHYSICS RELOAD EVERY x FRAMES // 0-EVERY FRAME
@@ -39,19 +36,19 @@ function phy.loop()
   end
 
   phy.jump()
+
   if phy.player.isOnGround(5) then
     phy.player.Drop=0
     if fallen > 30 then
       player.hp = player.hp - LoseHp
       LoseHp = 0
-      
     end
-	fallen = 0
+	  fallen = 0
   else
-      if not(player.jump) then
-        LoseHp = LoseHp + 0.15
-        fallen = fallen + 1
-      end
+    if not(player.jump) then
+      LoseHp = LoseHp + 0.15
+      fallen = fallen + 1
+    end
   end
 end
 

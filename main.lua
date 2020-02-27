@@ -8,7 +8,7 @@ require'loadmusic'
 require'chunk-generator'
 
 gameName="CaveDig"
-version=35
+version=37
 ru=false
 cheat=false
 
@@ -87,6 +87,7 @@ require'menu'
 require'item'
 require'modapi'
 require'craft'
+require'entity'
 
 function love.textinput(text)
   menu.enterText(text,bs)
@@ -309,9 +310,11 @@ function love.draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.setFont(fonts.default)
-
+    
+    api.entities.f.draw()
     camera:detach()
     camera:draw()
+
     crafting.f.gui()
     inv.draw()
   end
