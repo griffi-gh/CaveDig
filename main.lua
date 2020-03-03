@@ -1,16 +1,17 @@
-utf8=require("utf8")
+gameName="CaveDig"
+version=38
+OFFSCR=0.99
+ru=false --///RUS LANG///
+cheat=false --/// Q- fast break /// G- invert gravity ///
+debug=1 --/// 0=off /// 1=FPS only /// 2=FPS and DT /// 3=2-line FPS,DT and AVG DT ///
 
+utf8=require("utf8")
 baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump' --BUMP COLLISION
 require'f'
 require'loadmusic'
 require'chunk-generator'
-
-gameName="CaveDig"
-version=37
-ru=false
-cheat=false
 
 local input = baton.new {
   controls = {
@@ -55,7 +56,7 @@ world.tile.ItemData={}
 
 world.tile.ItemData[1] = {type="block",strength=35} --dirt
 world.tile.ItemData[2] = {type="block",strength=35} --grass
-world.tile.ItemData[3] = {type="block_stone",strength=250} --stone
+world.tile.ItemData[3] = {type="block_stone",strength=200} --stone
 world.tile.ItemData[4] = {type="block",strength=30} --sand
 world.tile.ItemData[5] = {type="block_wood",strength=100}--wood
 world.tile.ItemData[6] = {type="block",strength=10}--leaves
@@ -64,7 +65,7 @@ world.tile.ItemData[8] = {type="block",strength=20}--cactus
 world.tile.ItemData[9] = {type="block",strength=100} --planks
 world.tile.ItemData[10] = {type="item",strength=9999} --stick
 world.tile.ItemData[11] = {type="item_axe",strength=2}--wooden axe
-world.tile.ItemData[12] = {type="block",strength=50}--iron ore
+world.tile.ItemData[12] = {type="block_stone",strength=215}--iron ore
 world.tile.ItemData[13] = {type="item_pickaxe",strength=2}--wooden pickaxe
 
 world.tile.actions=table.fill(table.count(world.tile.texture_files),"")
@@ -128,14 +129,15 @@ function love.keypressed(key,scancode,isrepeat) --DEBUG
     love.textinput(key)
   end
   if(key=="k")then chl.f.saveChunk() end
-  --if(key=="escape")then inGame=false end
+  if(key=="escape")then
+    inGame=false;
+    menu.screen=0;
+    XworldI=false;
+    XworldName=nil;
+  end
   if(cheat and inGame) then
     if(key=="q")then world.tile.ItemData=table.fill(#world.tile.ItemData) end
     if(key=="g")then player.weight=-player.weight end
-    if(key=="v")then world.tile.h=world.tile.h+1;world.tile.w=world.tile.h end
-    if(key=="b")then world.tile.h=world.tile.h-1;world.tile.w=world.tile.h end
-    if(key=="m")then if(world.w<64)then world.w=world.w+1;world.h=world.h+1 end; end
-    if(key=="n")then world.w=world.w-1;world.h=world.h-1; end
   end
 end
 
@@ -169,6 +171,7 @@ end
 function love.update(dt)
 
   udt=dt
+  adt=love.timer.getAverageDelta()
   fps=love.timer.getFPS()
 
   if(fps>70)then
@@ -227,10 +230,13 @@ function love.update(dt)
       end
       if(m2)then
         if(world.chunk.data[t1d2d(mxb,myb,world.w)]==0)then
-          if(player.inventory[inv.selected].q>0) and (world.tile.ItemData[player.inventory[inv.selected].id].type == "block")then
+          if(player.inventory[inv.selected].q>0)then
+            local type=world.tile.ItemData[player.inventory[inv.selected].id].type or ""
+            local canPlace= type== "block" or type== "block_wood" or type== "block_stone"
+            if(canPlace)then
               world.chunk.data[t1d2d(mxb,myb,world.w)]=player.inventory[inv.selected].id
               inv.removeItem(nil,1,inv.selected)
-
+            end
           end
         else
           world.tile.actions[world.chunk.data[t1d2d(mxb,myb,world.w)]]()
@@ -269,20 +275,30 @@ function love.draw()
 
     camera:attach()
 
+    blocksOnScreen={}
+
     for i=1,world.w-1 do
       for j=1,world.h-1 do
-        rangex=2*world.tile.h
-        rangey=2*world.tile.w
+        rangex=OFFSCR*world.tile.h
+        rangey=OFFSCR*world.tile.w
         local tmpx=(i*world.tile.w)-camera.x+w/2
         local tmpy=(j*world.tile.h)-camera.y+h/2
         if(tmpx>0-rangex and tmpx<w+rangex and tmpy>0-rangey and tmpy<h+rangey)then
           local texture_id=world.chunk.data[t1d2d(i,j,world.w)]
           if(texture_id>0)then
+            blocksOnScreen[#blocksOnScreen+1]=t1d2d(i,j,world.w)
             love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h,(j-1)*world.tile.w)
           end
         end
       end
     end
+
+    --OwO
+    --[[for z=-10,0 do
+      --love.graphics.setColor(math.abs(z)/10+0.6,math.abs(z)/10+0.6,math.abs(z)/10+0.6) --3D
+      --love.graphics.setColor(math.abs(z)/10,math.abs(z)/10,math.abs(z)/10,0.5) --FOG
+      love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h-z,(j-1)*world.tile.w-z)
+    end]]
 
     if(player.brk>0)then
 	  local toadd = 0
@@ -310,7 +326,7 @@ function love.draw()
 
     love.graphics.setColor(1,1,1)
     love.graphics.setFont(fonts.default)
-    
+
     api.entities.f.draw()
     camera:detach()
     camera:draw()
@@ -321,5 +337,16 @@ function love.draw()
 
   api.inner.loop()
 
-  love.graphics.print("FPS:"..fps.." dt:"..udt,0,h-12)
+  if(debug>=1)then
+    local debLINE=1
+    local debTXT="FPS:"..fps
+    if(debug>=2)then
+      debTXT=debTXT.." dt:"..udt
+      if(debug>=3)then
+        debTXT=debTXT.."\navg dt "..adt
+        debLINE=2
+      end
+    end
+    love.graphics.print(debTXT,0,h-12*(debLINE+0.25))
+  end
 end

@@ -6,8 +6,9 @@ function isClicked(x1,y1,x2,y2)
   return (mx>x1 and mx<x2+x1 and my>y1 and my<y2+y1) and m1
 end
 
-function nf(i)
-  return i or 0
+function nf(i,x)
+  x=x or 0
+  return i or x
 end
 
 function bs(text)
