@@ -65,6 +65,7 @@ function phy.loop()
       LoseHp = 0
     end
 	  fallen = 0
+    LoseHp = 0
   else
     if not(player.jump) then
       LoseHp = LoseHp + 0.15
