@@ -9,6 +9,6 @@ Minecraft/Terraria-like 2D sandbox game
 - [ ] Menu rewrite
 - [ ] options menu
 - [X] world selection
-- [ ] multiplayer
--- [ ] server
--- [ ] client
+1 [ ] multiplayer
+- [ ] server
+- [ ] client
