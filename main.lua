@@ -1,4 +1,9 @@
-gameName="CaveDig"
+require'f'
+require'modapi'
+require 'lang'
+langfile = "testlang.lang"
+api.lang.load(langfile)
+gameName=api.lang.get("game.title")
 version=38
 OFFSCR=0.99
 ru=false --///RUS LANG///
@@ -9,9 +14,10 @@ utf8=require("utf8")
 baton = require 'lib.Baton.baton' --BATON INPUT
 Camera = require 'lib.Camera.camera'  --STALKERX CAMERA
 bump = require 'lib.bump.bump' --BUMP COLLISION
-require'f'
+
 require'loadmusic'
 require'chunk-generator'
+
 
 local input = baton.new {
   controls = {
@@ -84,9 +90,9 @@ world.tile.w=32
 require'font'
 require'physics'
 require'chunk-loader'
-require'menu'
+--require'menu'
 require'item'
-require'modapi'
+require'menu'
 require'craft'
 require'entity'
 
@@ -287,18 +293,19 @@ function love.draw()
           local texture_id=world.chunk.data[t1d2d(i,j,world.w)]
           if(texture_id>0)then
             blocksOnScreen[#blocksOnScreen+1]=t1d2d(i,j,world.w)
-            love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h,(j-1)*world.tile.w)
+            --love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h,(j-1)*world.tile.w)
+            for z=-10,0 do
+              --love.graphics.setColor(math.abs(z)/10+0.6,math.abs(z)/10+0.6,math.abs(z)/10+0.6) --3D
+              --love.graphics.setColor(math.abs(z)/10,math.abs(z)/10,math.abs(z)/10,0.5) --FOG
+              love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h-z,(j-1)*world.tile.w-z)
+            end
           end
         end
       end
     end
 
     --OwO
-    --[[for z=-10,0 do
-      --love.graphics.setColor(math.abs(z)/10+0.6,math.abs(z)/10+0.6,math.abs(z)/10+0.6) --3D
-      --love.graphics.setColor(math.abs(z)/10,math.abs(z)/10,math.abs(z)/10,0.5) --FOG
-      love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h-z,(j-1)*world.tile.w-z)
-    end]]
+
 
     if(player.brk>0)then
 	  local toadd = 0
