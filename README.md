@@ -10,5 +10,5 @@ Minecraft/Terraria-like 2D sandbox game
 - [ ] options menu
 - [X] world selection
 1. [ ] multiplayer
-    - [ ] server
-    - [ ] client
+  - [ ] server
+  - [ ] client
