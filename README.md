@@ -2,6 +2,8 @@
 
 Minecraft/Terraria-like 2D sandbox game
 
+Website: <cavedig.plotgaming.hu>
+
 ## Roadmap
 
 - [X] simple terrain generation
