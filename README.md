@@ -2,7 +2,7 @@
 
 Minecraft/Terraria-like 2D sandbox game
 
-Website: <cavedig.plotgaming.hu>
+Website: <http://cavedig.plotgaming.hu>
 
 ## Roadmap
 
