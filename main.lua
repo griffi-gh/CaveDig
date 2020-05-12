@@ -9,6 +9,7 @@ OFFSCR=0.99
 ru=false --///RUS LANG///
 cheat=false --/// Q- fast break /// G- invert gravity ///
 debug=1 --/// 0=off /// 1=FPS only /// 2=FPS and DT /// 3=2-line FPS,DT and AVG DT ///
+enable3d=false
 
 utf8=require("utf8")
 baton = require 'lib.Baton.baton' --BATON INPUT
@@ -293,11 +294,13 @@ function love.draw()
           local texture_id=world.chunk.data[t1d2d(i,j,world.w)]
           if(texture_id>0)then
             blocksOnScreen[#blocksOnScreen+1]=t1d2d(i,j,world.w)
-            --love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h,(j-1)*world.tile.w)
-            for z=-10,0 do
-              --love.graphics.setColor(math.abs(z)/10+0.6,math.abs(z)/10+0.6,math.abs(z)/10+0.6) --3D
-              --love.graphics.setColor(math.abs(z)/10,math.abs(z)/10,math.abs(z)/10,0.5) --FOG
-              love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h-z,(j-1)*world.tile.w-z)
+	    if enable3d then
+		for z=-10,0 do
+                love.graphics.setColor(math.abs(z)/10+0.6,math.abs(z)/10+0.6,math.abs(z)/10+0.6) --3D
+                love.graphics.setColor(math.abs(z)/10,math.abs(z)/10,math.abs(z)/10,0.5) --FOG
+                love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h-z,(j-1)*world.tile.w-z)
+            else
+            	love.graphics.draw(world.tile.textures[texture_id],(i-1)*world.tile.h,(j-1)*world.tile.w)
             end
           end
         end
