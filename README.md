@@ -1,6 +1,7 @@
 # CaveDig
 
 Minecraft/Terraria-like 2D sandbox game
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/598d069167e7495bb709ba59a07c4eaf)](https://www.codacy.com/manual/BomberPlayz/CaveDig?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BomberPlayz/CaveDig&amp;utm_campaign=Badge_Grade)
 
 Website: <http://cavedig.plotgaming.hu>
