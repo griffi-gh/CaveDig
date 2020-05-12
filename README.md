@@ -8,18 +8,18 @@ Website: <http://cavedig.plotgaming.hu>
 
 ## Roadmap
 
-- [X] simple terrain generation
-- [X] crafting
-- [ ] Menu rewrite
-- [ ] options menu
-- [X] world selection
-1. [ ] multiplayer
-    - [ ] server
-    - [ ] client
+- [X]  simple terrain generation
+- [X]  crafting
+- [ ]  Menu rewrite
+- [ ]  options menu
+- [X]  world selection
+- [ ]  multiplayer
+    - [ ]  server
+    - [ ]  client
 
-1. [ ] entities
-    - [X] BlockEntity
-    - [ ] entity collosion
-    - [X] entity spawn
+- [ ]  entities
+    - [X]  BlockEntity
+    - [ ]  entity collosion
+    - [X]  entity spawn
 
-- [ ] player death
+- [ ]  player death
