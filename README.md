@@ -14,3 +14,10 @@ Website: <http://cavedig.plotgaming.hu>
 1. [ ] multiplayer
     - [ ] server
     - [ ] client
+
+1. [ ] entities
+    - [X] BlockEntity
+    - [ ] entity collosion
+    - [X] entity spawn
+
+- [ ] player death
